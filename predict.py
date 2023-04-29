@@ -15,7 +15,7 @@ from diffusers import (
 from PIL import Image
 from cog import BasePredictor, Input, Path
 
-MODEL_ID = "stabilityai/stable-diffusion-2-1"
+MODEL_ID = "sinkinai/meinapastel"
 MODEL_CACHE = "diffusers-cache"
 
 
@@ -43,10 +43,10 @@ class Predictor(BasePredictor):
         self,
         prompt: str = Input(
             description="Input prompt",
-            default="A fantasy landscape, trending on artstation",
+            default="(Masterpiece), (Best Quality), (Ultra Detailed), (1 girl), smiling, cute, bangs:0.7, black hair, (beautiful and detailed face) , official art",
         ),
         negative_prompt: str = Input(
-            description="The prompt NOT to guide the image generation. Ignored when not using guidance",
+            description="(low quality: 1.3), (worst quality: 1.3), (zombie, sketch, interlocking, manga), boy, boobs, boobs, porn,text,No more than five fingers, bad anatomy, (((bad hands))), error, missing fingers,",
             default=None,
         ),
         image: Path = Input(
@@ -64,7 +64,7 @@ class Predictor(BasePredictor):
         ),
         prompt_strength: float = Input(
             description="Prompt strength when providing the image. 1.0 corresponds to full destruction of information in init image",
-            default=0.8,
+            default=0.26,
         ),
         num_outputs: int = Input(
             description="Number of images to output. Higher number of outputs may OOM.",
@@ -76,7 +76,7 @@ class Predictor(BasePredictor):
             description="Number of denoising steps", ge=1, le=500, default=25
         ),
         guidance_scale: float = Input(
-            description="Scale for classifier-free guidance", ge=1, le=20, default=7.5
+            description="Scale for classifier-free guidance", ge=1, le=20, default=7.0
         ),
         scheduler: str = Input(
             default="DPMSolverMultistep",
@@ -84,7 +84,7 @@ class Predictor(BasePredictor):
             description="Choose a scheduler.",
         ),
         seed: int = Input(
-            description="Random seed. Leave blank to randomize the seed", default=None
+            description="Random seed. Leave blank to randomize the seed", default=1185332774
         ),
     ) -> List[Path]:
         """Run a single prediction on the model"""
@@ -102,6 +102,7 @@ class Predictor(BasePredictor):
         generator = torch.Generator("cuda").manual_seed(seed)
         output = pipe(
             prompt=[prompt] * num_outputs if prompt is not None else None,
+            negative_prompt=[negative_prompt] * num_outputs if negative_prompt is not None else None,
             guidance_scale=guidance_scale,
             generator=generator,
             num_inference_steps=num_inference_steps,
