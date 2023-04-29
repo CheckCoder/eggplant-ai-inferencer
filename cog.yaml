@@ -10,3 +10,5 @@ build:
     - "accelerate==0.15.0"
 
 predict: "predict.py:Predictor"
+
+image: "r8.im/checkcoder/eggplant-ai-inferencer"
