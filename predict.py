@@ -52,16 +52,16 @@ class Predictor(BasePredictor):
         image: Path = Input(
             description="Inital image to generate variations of.",
         ),
-        width: int = Input(
-            description="Width of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
-            choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
-            default=512,
-        ),
-        height: int = Input(
-            description="Height of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
-            choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
-            default=512,
-        ),
+        # width: int = Input(
+        #     description="Width of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
+        #     choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
+        #     default=512,
+        # ),
+        # height: int = Input(
+        #     description="Height of output image. Maximum size is 1024x768 or 768x1024 because of memory limits",
+        #     choices=[128, 256, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024],
+        #     default=512,
+        # ),
         prompt_strength: float = Input(
             description="Prompt strength when providing the image. 1.0 corresponds to full destruction of information in init image",
             default=0.26,
