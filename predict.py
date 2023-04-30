@@ -37,6 +37,7 @@ class Predictor(BasePredictor):
             safety_checker=self.txt2img_pipe.safety_checker,
             feature_extractor=self.txt2img_pipe.feature_extractor,
         ).to("cuda")
+        self.img2img_pipe.safety_checker = lambda images, clip_input: (images, False)
 
     @torch.inference_mode()
     def predict(
