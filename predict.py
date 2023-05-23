@@ -24,21 +24,15 @@ class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
         print("Loading pipeline...")
-        self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
+        self.img2img_pipe = StableDiffusionImg2ImgPipeline(
             MODEL_ID,
             cache_dir=MODEL_CACHE,
             local_files_only=True,
-        ).to("cuda")
-        self.img2img_pipe = StableDiffusionImg2ImgPipeline(
-            vae=self.txt2img_pipe.vae,
-            text_encoder=self.txt2img_pipe.text_encoder,
-            tokenizer=self.txt2img_pipe.tokenizer,
-            unet=self.txt2img_pipe.unet,
-            scheduler=self.txt2img_pipe.scheduler,
-            safety_checker=self.txt2img_pipe.safety_checker,
-            feature_extractor=self.txt2img_pipe.feature_extractor,
-        ).to("cuda")
+            torch_dtype=torch.float16
+        )
         self.img2img_pipe.safety_checker = lambda images, clip_input: (images, False)
+        self.img2img_pipe.enable_model_cpu_offload()
+        self.img2img_pipe.enable_xformers_memory_efficient_attention()
 
     @torch.inference_mode()
     def predict(
