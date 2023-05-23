@@ -12,3 +12,9 @@ First, download the pre-trained weights:
 Then, you can run predictions:
 
     cog predict -i prompt="..." -i image=@... 
+
+
+GPU: 计算型 gn6i / ecs.gn6i-c4g1.xlarge (4vCPU 15GiB)
+硬盘: 60G
+按流量计费：50Mbps
+!Test
