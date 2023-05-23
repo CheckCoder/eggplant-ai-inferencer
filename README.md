@@ -15,6 +15,6 @@ Then, you can run predictions:
 
 
 GPU: 计算型 gn6i / ecs.gn6i-c4g1.xlarge (4vCPU 15GiB)
-硬盘: 60G
+硬盘: 100G
 按流量计费：50Mbps
 !Test
