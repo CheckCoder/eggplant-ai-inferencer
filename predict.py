@@ -11,6 +11,7 @@ from diffusers import (
     EulerDiscreteScheduler,
     EulerAncestralDiscreteScheduler,
     DPMSolverMultistepScheduler,
+    UniPCMultistepScheduler,
 )
 from PIL import Image
 from cog import BasePredictor, Input, Path
@@ -80,8 +81,8 @@ class Predictor(BasePredictor):
             description="Scale for classifier-free guidance", ge=1, le=20, default=7.0
         ),
         scheduler: str = Input(
-            default="DPMSolverMultistep",
-            choices=["DDIM", "K_EULER", "DPMSolverMultistep", "K_EULER_ANCESTRAL", "PNDM", "KLMS"],
+            default="UniPCMultistepScheduler",
+            choices=["DPMSolverMultistep", "UniPCMultistepScheduler", "DDIM", "K_EULER", "K_EULER_ANCESTRAL", "PNDM", "KLMS"],
             description="Choose a scheduler.",
         ),
         seed: int = Input(
@@ -127,4 +128,5 @@ def make_scheduler(name, config):
         "K_EULER": EulerDiscreteScheduler.from_config(config),
         "K_EULER_ANCESTRAL": EulerAncestralDiscreteScheduler.from_config(config),
         "DPMSolverMultistep": DPMSolverMultistepScheduler.from_config(config),
+        "UniPCMultistepScheduler": UniPCMultistepScheduler.from_config(config),
     }[name]
