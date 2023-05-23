@@ -47,8 +47,8 @@ class Predictor(BasePredictor):
             default="(Masterpiece), (Best Quality), (Ultra Detailed), (1 girl), smiling, cute, bangs:0.7, black hair, (beautiful and detailed face) , official art",
         ),
         negative_prompt: str = Input(
-            description="(low quality: 1.3), (worst quality: 1.3), (zombie, sketch, interlocking, manga), boy, boobs, boobs, porn,text,No more than five fingers, bad anatomy, (((bad hands))), error, missing fingers,",
-            default=None,
+            description="Input negative prompt",
+            default="(low quality: 1.3), (worst quality: 1.3), (zombie, sketch, interlocking, manga), boy, boobs, boobs, porn,text,No more than five fingers, bad anatomy, (((bad hands))), error, missing fingers",
         ),
         image: Path = Input(
             description="Inital image to generate variations of.",
