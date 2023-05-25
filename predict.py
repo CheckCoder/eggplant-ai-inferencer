@@ -118,7 +118,7 @@ class Predictor(BasePredictor):
 
         pipe = self.img2img_pipe
         extra_kwargs = {
-            "image": Image.open(image).convert("RGB"),
+            "image": image,
             "strength": prompt_strength,
         }
         pipe.scheduler = make_scheduler(scheduler, pipe.scheduler.config)
