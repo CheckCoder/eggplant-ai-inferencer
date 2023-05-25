@@ -1,4 +1,5 @@
 import os
+import math
 from typing import List
 
 import torch
@@ -19,6 +20,21 @@ from cog import BasePredictor, Input, Path
 MODEL_ID = "sinkinai/meinapastel"
 MODEL_CACHE = "diffusers-cache"
 
+def resize_image(image, x, y):
+    return image.resize((x, y), Image.ANTIALIAS)
+
+def resize_image_to_size(image, to_size):
+    width, height = image.size
+    image_size = width * height
+    if image_size <= to_size:
+        return image
+
+    # w / h = x / y
+    # x * y = to_size
+    # x * x = w / h * to_size
+    x = round(math.sqrt(width / height * to_size))
+    y = round(to_size / x)
+    return resize_image(image, x, y)
 
 class Predictor(BasePredictor):
     def setup(self):
@@ -88,11 +104,17 @@ class Predictor(BasePredictor):
         seed: int = Input(
             description="Random seed. Leave blank to randomize the seed", default=1185332774
         ),
+        max_image_size: int = Input(
+            description="Max image size, if it exceeds, it will compress", default=786432
+        )
     ) -> List[Path]:
         """Run a single prediction on the model"""
         if seed is None:
             seed = int.from_bytes(os.urandom(2), "big")
         print(f"Using seed: {seed}")
+
+        image = Image.open(image).convert("RGB")
+        image = resize_image_to_size(image, max_image_size)
 
         pipe = self.img2img_pipe
         extra_kwargs = {
