@@ -81,7 +81,7 @@ class Predictor(BasePredictor):
             description="Scale for classifier-free guidance", ge=1, le=20, default=7.0
         ),
         scheduler: str = Input(
-            default="UniPCMultistepScheduler",
+            default="DPMSolverMultistep",
             choices=["DPMSolverMultistep", "UniPCMultistepScheduler", "DDIM", "K_EULER", "K_EULER_ANCESTRAL", "PNDM", "KLMS"],
             description="Choose a scheduler.",
         ),
